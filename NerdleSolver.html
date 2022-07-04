@@ -1,29 +1,32 @@
 
 <!DOCTYPE html>
 <html>
-<body>
-    <pre id="input">
-Step 1: Enter  first equation as  <b>0+12/3=4</b>
-Step 2: Enter second equation as  <b>9*8-7=65</b>
-Step 3: Enter the results for both rows below as per the example.
-        Adjust the colors below (b-black, p-purple, g-green).
-        
-Hit <b>Solve</b> button!
+  <head>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+  </head>
 
-<form>
-<input type="text" id="line1" size="24" value="0b +b 1p 2p /p 3b =p 4b"/>
-<input type="text" id="line2" size="24" value="9p *g 8p -b 7p =g 6b 5b"/>
+  <body>
+    <h1>
+      Nerdle Solver!
+    </h1>
+    <p id="instructions">
+      Go enter this two equations <b>0+12/3=4</b> and <b>9*8-7=65</b> on Nerdle.<br />
+      Enter the results from Nerdle below by adjusting the colors<br />
+      (b-black, p-purple, g-green).
+    </p>
+    <form>
+      <pre id='input'>
+<input type="text" id="line1" size="24" value="0b +b 1b 2p /g 3g =g 4p"/>
+<input type="text" id="line2" size="24" value="9p *b 8b -b 7b =p 6b 5p"/>
 <input type="button" value="Solve" onclick="solve()"/>
-</form>
 </pre>
-<hr/>
-<pre id="output">
+    </form>
+    <pre id="output" style="background-color:LightGreen;">
 </pre>
-<hr/>
+    <hr />
 
 
     <script type="text/javascript">//<![CDATA[
-
 
 boxes = []; //represents each of eight boxes
 purples = []; //letters not in positions
@@ -39,7 +42,7 @@ function findSolution() {
   boxes.forEach(box => problemSpace *= box.length());
   //console.log(boxes);
   console.log("START ------", problemSpace);
-  if (problemSpace > 5000000) {
+  if (problemSpace > 1000000) {
     println("Error:Problem space too large. Please follow the instructions properly");
     throw Error("Problem space too large. Please follow the instructions properly")
   }
@@ -51,7 +54,7 @@ function findSolution() {
     /* console.log("Equation:", equation); */
     evaluate(equation);
     counter++;
-    if (counter > 5000000) { //extra check. Exit if endless loop.
+    if (counter > 1000000) { //extra check. Exit if endless loop.
       println("Error:Too many iterations. Please follow the instructions properly");
       throw Error("Too many iterations. Please follow the instructions properly")
     }
@@ -178,56 +181,22 @@ function initialize() {
   boxes[1].remove(['=']); // = sign can't be in first 4 boxes.
   boxes[2].remove(['=']);
   boxes[3].remove(['=']);
-  console.log('please enter first equation as 12+46=58');
-  console.log('and enter second equation as   93-70=23');
 }
 
 function solve() {
   line1 = document.getElementById("line1").value;
   line2 = document.getElementById("line2").value;
-  println('Computing...');
+  println(line1);
+  println(line2);
   enterResults(line1);
   enterResults(line2);
+  //console.log("Boxes:", boxes)
   findSolution();
 }
 
 
 initialize();
-//findBestEquation();
-
-
 
   //]]></script>
-
-  <script>
-    // tell the embed parent frame the height of the content
-    if (window.parent && window.parent.parent){
-      window.parent.parent.postMessage(["resultsFrame", {
-        height: document.body.getBoundingClientRect().height,
-        slug: ""
-      }], "*")
-    }
-
-    // always overwrite window.name, in case users try to set it manually
-    window.name = "result"
-  </script>
-
-    <script>
-      let allLines = []
-
-      window.addEventListener("message", (message) => {
-        if (message.data.console){
-          let insert = document.querySelector("#insert")
-          allLines.push(message.data.console.payload)
-          insert.innerHTML = allLines.join(";\r")
-
-          let result = eval.call(null, message.data.console.payload)
-          if (result !== undefined){
-            console.log(result)
-          }
-        }
-      })
-    </script>
-
 </body>
 </html>
