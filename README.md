@@ -1,4 +1,5 @@
 # Nerdle-Solver
 Simple javascript code to solve math nerdle game at https://nerdlegame.com/
+Nerdle was designed after the popular game wordle.
 
-Code runs coimpletely in browser.
+Code runs completely in browser.
